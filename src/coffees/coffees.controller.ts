@@ -14,7 +14,9 @@ import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeeDto } from './dtos/create-coffee.dto';
 import { UpdateCoffeeDto } from './dtos/update-coffee.dto';
 import { PaginationQueryDto } from '../common/dtos/pagination-query.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeeService: CoffeesService) {}
