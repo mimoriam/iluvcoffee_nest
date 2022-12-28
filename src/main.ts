@@ -18,9 +18,14 @@
 
 // npm i bcrypt
 // npm i -D @types/bcrypt
+
 // nest g module iam
 // nest g service iam/hashing
 // nest g service iam/hashing/bcrypt --flat
+// nest g controller iam/authentication
+// nest g service iam/authentication
+// nest g class iam/authentication/dto/sign-in.dto
+// nest g class iam/authentication/dto/sign-up.dto
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
