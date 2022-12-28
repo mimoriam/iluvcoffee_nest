@@ -18,6 +18,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
@@ -30,6 +32,8 @@ async function bootstrap() {
       },
     }),
   );
+  // This filter on EVERY error includes a "timestamp" field:
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 
