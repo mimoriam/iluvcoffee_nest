@@ -15,6 +15,8 @@ import { CreateCoffeeDto } from './dtos/create-coffee.dto';
 import { UpdateCoffeeDto } from './dtos/update-coffee.dto';
 import { PaginationQueryDto } from '../common/dtos/pagination-query.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ActiveUser } from '../iam/decorators/active-user.decorator';
+import { ActiveUserData } from '../iam/interfaces/active-user-data.interface';
 
 @ApiTags('coffees')
 @Controller('coffees')
@@ -24,7 +26,10 @@ export class CoffeesController {
   @Get()
   async findAll(
     @Query() paginationQuery: PaginationQueryDto,
+    // Using this decorator, we can inject User properties easily:
+    @ActiveUser() user: ActiveUserData,
   ): Promise<Coffee[]> {
+    console.log(user);
     return this.coffeeService.findAll(paginationQuery);
   }
 
