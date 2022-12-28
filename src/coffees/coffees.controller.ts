@@ -4,10 +4,10 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { Coffee } from './entities/coffee.entity';
