@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import jwtConfig from '../config/jwt.config';
 import { ConfigType } from '@nestjs/config';
 import { ActiveUserData } from '../interfaces/active-user-data.interface';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -61,20 +62,58 @@ export class AuthenticationService {
       throw new UnauthorizedException(`Password does not match`);
     }
 
-    const accessToken = await this.jwtService.signAsync(
+    return await this.generateTokens(user);
+  }
+
+  async refreshToken(refreshTokenDto: RefreshTokenDto) {
+    try {
+      const { sub } = await this.jwtService.verifyAsync<
+        Pick<ActiveUserData, 'sub'>
+      >(refreshTokenDto.refreshToken, {
+        secret: this.jwtConfiguation.secret,
+        audience: this.jwtConfiguation.audience,
+        issuer: this.jwtConfiguation.issuer,
+      });
+
+      const user = await this.userRepository.findOneByOrFail({
+        id: sub,
+      });
+
+      return await this.generateTokens(user);
+    } catch (err) {
+      throw new UnauthorizedException();
+    }
+  }
+
+  public async generateTokens(user: User) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfiguation.accessTokenTtl,
+        { email: user.email },
+      ),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.signToken(user.id, this.jwtConfiguation.refreshTokenTtl),
+    ]);
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async signToken<T>(userId: number, expiresIn: number, payload: T) {
+    return await this.jwtService.signAsync(
       {
-        sub: user.id,
-        email: user.email,
-      } as ActiveUserData,
+        sub: userId,
+        ...payload,
+      },
       {
         audience: this.jwtConfiguation.audience,
         issuer: this.jwtConfiguation.issuer,
         secret: this.jwtConfiguation.secret,
-        expiresIn: this.jwtConfiguation.accessTokenTtl,
+        expiresIn,
       },
     );
-    return {
-      accessToken,
-    };
   }
 }
