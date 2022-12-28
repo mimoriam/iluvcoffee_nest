@@ -15,7 +15,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: 'postgres',
       database: 'nest_course',
       autoLoadEntities: true,
-      // entities: [Coffee, Flavor],
       subscribers: [],
       migrations: [],
       logging: false,

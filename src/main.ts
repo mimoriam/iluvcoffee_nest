@@ -3,6 +3,11 @@
 
 // npm install @nestjs/typeorm typeorm pg
 
+// Migrations:
+// npm run build
+// npx typeorm migration:create src/migrations/CoffeeRefactor
+// npx typeorm-ts-node-esm migration:run -d ormconfig.ts
+
 // npm install @nestjs/config
 
 // npm install joi
