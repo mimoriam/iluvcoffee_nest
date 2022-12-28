@@ -31,6 +31,9 @@
 // npm i -D @types/cookie-parser
 // npm i @nestjs/jwt
 
+// nest g guard iam/authentication/guards/access-token
+// nest g guard iam/authentication/guards/authentication
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
