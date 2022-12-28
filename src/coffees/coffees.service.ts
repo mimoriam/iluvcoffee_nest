@@ -18,7 +18,7 @@ export class CoffeesService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async findAll(paginationQuery: PaginationQueryDto) {
+  async findAll(paginationQuery: PaginationQueryDto): Promise<Coffee[]> {
     const { limit, offset } = paginationQuery;
     return this.coffeeRepository.find({
       skip: offset,
@@ -26,7 +26,7 @@ export class CoffeesService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Coffee> {
     const coffee = await this.coffeeRepository.findOneBy({
       id: id,
     });
@@ -37,7 +37,7 @@ export class CoffeesService {
     return coffee;
   }
 
-  async create(createCoffeeDto: CreateCoffeeDto) {
+  async create(createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
     const flavors = await Promise.all(
       createCoffeeDto.flavors.map((name) => this.preloadFlavorByName(name)),
     );
@@ -49,7 +49,7 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async update(id: number, updateCoffeeDto: UpdateCoffeeDto) {
+  async update(id: number, updateCoffeeDto: UpdateCoffeeDto): Promise<Coffee> {
     const flavors =
       updateCoffeeDto.flavors &&
       (await Promise.all(
@@ -70,7 +70,7 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Coffee> {
     const coffee = await this.coffeeRepository.findOneBy({
       id: id,
     });
