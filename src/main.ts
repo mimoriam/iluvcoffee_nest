@@ -27,11 +27,17 @@
 // nest g class iam/authentication/dto/sign-in.dto
 // nest g class iam/authentication/dto/sign-up.dto
 
+// npm i cookie-parser
+// npm i -D @types/cookie-parser
+// npm i @nestjs/jwt
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+
+import * as cookieParser from 'cookie-parser';
 
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -49,6 +55,7 @@ async function bootstrap() {
   );
   // This filter on EVERY error includes a "timestamp" field:
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.use(cookieParser());
 
   const options = new DocumentBuilder()
     .setTitle('ILoveCoffee')
