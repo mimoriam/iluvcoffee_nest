@@ -26,12 +26,14 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/mapped-types": "^1.2.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.1.4",
     "@nestjs/typeorm": "^9.0.1",
     "joi": "^17.7.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "swagger-ui-express": "^4.6.0",
     "typeorm": "^0.3.11"
   },
   "devDependencies": {
