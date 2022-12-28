@@ -57,6 +57,7 @@ export class CoffeesService {
       ));
 
     const coffee = await this.coffeeRepository.preload({
+      // + here means string > int conversion (not needed):
       id: +id,
       ...updateCoffeeDto,
       flavors,
