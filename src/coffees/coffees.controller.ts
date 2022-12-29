@@ -19,6 +19,8 @@ import { ActiveUser } from '../iam/decorators/active-user.decorator';
 import { ActiveUserData } from '../iam/interfaces/active-user-data.interface';
 import { Roles } from '../iam/authorization/decorators/roles.decorator';
 import { Role } from '../users/entities/user.entity';
+import { Permissions } from '../iam/authorization/decorators/permissions.decorator';
+import { Permission } from '../iam/authorization/permission.type';
 
 @ApiTags('coffees')
 @Controller('coffees')
@@ -40,7 +42,8 @@ export class CoffeesController {
     return this.coffeeService.findOne(id);
   }
 
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
+  @Permissions(Permission.CreateCoffee)
   @Post()
   async create(@Body() createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
     return this.coffeeService.create(createCoffeeDto);
