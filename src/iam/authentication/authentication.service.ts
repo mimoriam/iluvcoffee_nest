@@ -71,6 +71,28 @@ export class AuthenticationService {
     return await this.generateTokens(user);
   }
 
+  public async generateTokens(user: User) {
+    const refreshTokenId = randomUUID();
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfiguation.accessTokenTtl,
+        { email: user.email, role: user.role },
+      ),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.signToken(user.id, this.jwtConfiguation.refreshTokenTtl, {
+        refreshTokenId,
+      }),
+    ]);
+    await this.refreshTokenIdsStorage.insert(user.id, refreshTokenId);
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
   async refreshToken(refreshTokenDto: RefreshTokenDto) {
     try {
       const { sub, refreshTokenId } = await this.jwtService.verifyAsync<
@@ -103,28 +125,6 @@ export class AuthenticationService {
       }
       throw new UnauthorizedException();
     }
-  }
-
-  public async generateTokens(user: User) {
-    const refreshTokenId = randomUUID();
-
-    const [accessToken, refreshToken] = await Promise.all([
-      this.signToken<Partial<ActiveUserData>>(
-        user.id,
-        this.jwtConfiguation.accessTokenTtl,
-        { email: user.email },
-      ),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.signToken(user.id, this.jwtConfiguation.refreshTokenTtl, {
-        refreshTokenId,
-      }),
-    ]);
-    await this.refreshTokenIdsStorage.insert(user.id, refreshTokenId);
-    return {
-      accessToken,
-      refreshToken,
-    };
   }
 
   private async signToken<T>(userId: number, expiresIn: number, payload: T) {

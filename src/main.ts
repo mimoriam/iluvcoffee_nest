@@ -38,6 +38,8 @@
 // npm i --save ioredis
 // nest g class iam/authentication/refresh-token-ids.storage
 
+// nest g guard iam/authorization/guards/roles
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
