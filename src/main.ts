@@ -40,6 +40,11 @@
 
 // nest g guard iam/authorization/guards/roles
 
+// API Keys:
+// nest g class users/api-keys/entities/api-key.entity --no-spec
+// nest g service iam/authentication/api-keys --flat
+// nest g guard iam/authentication/guards/api-key
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';

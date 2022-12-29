@@ -21,7 +21,12 @@ import { Roles } from '../iam/authorization/decorators/roles.decorator';
 import { Role } from '../users/entities/user.entity';
 import { Permissions } from '../iam/authorization/decorators/permissions.decorator';
 import { Permission } from '../iam/authorization/permission.type';
+import {
+  Auth,
+  AuthType,
+} from '../iam/authentication/decorators/auth.decorator';
 
+@Auth(AuthType.Bearer, AuthType.ApiKey)
 @ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {

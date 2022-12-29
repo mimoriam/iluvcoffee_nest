@@ -2,6 +2,7 @@ import { SetMetadata } from '@nestjs/common';
 
 export enum AuthType {
   Bearer,
+  ApiKey,
   None,
 }
 

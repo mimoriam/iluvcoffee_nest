@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PermissionType } from '../../iam/authorization/permission.type';
+import { ApiKey } from '../api-keys/entities/api-key.entity';
 
 export enum Role {
   Regular = 'regular',
@@ -24,4 +31,8 @@ export class User {
   // we're using it just to showcase different authorization techniques:
   @Column({ enum: Permissions, default: [], type: 'json' })
   permissions: PermissionType[];
+
+  @JoinTable()
+  @OneToMany(() => ApiKey, (apiKey) => apiKey.user)
+  apiKeys: ApiKey[];
 }
